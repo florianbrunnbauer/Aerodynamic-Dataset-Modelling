@@ -3,7 +3,7 @@ Polar key,xf-n0012-il-1000000
 Airfoil,n0012-il
 Reynolds number,1000000
 Ncrit,9
-Mach,0
+Mach,0.5
 Max Cl/Cd,75.5962
 Max Cl/Cd alpha,7.5
 Url,http://airfoiltools.com/polar/csv?polar=xf-n0012-il-1000000

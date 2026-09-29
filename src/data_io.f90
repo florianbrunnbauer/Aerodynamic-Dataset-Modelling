@@ -2,6 +2,7 @@
 
 module data_io
   use iso_fortran_env, only: real64, iostat_end
+  use types, only: aerodynamic_polar_type, aerodynamic_dataset_type
   implicit none
   private
 
@@ -9,25 +10,27 @@ module data_io
 
 contains
 
-    subroutine read_airfoil_data(filename, alpha, cl, cd, cdp, cm, top_xtr, bot_xtr)
+    subroutine read_airfoil_data(filename, dataset)
         character(len=*), intent(in) :: filename
-        real(real64), allocatable, intent(out) :: alpha(:), cl(:), cd(:), &
-                                       cdp(:), cm(:), top_xtr(:), bot_xtr(:)
-        
+        type(aerodynamic_dataset_type), intent(out) :: dataset
+
         character(len=512) :: line
         character(len=256) :: error_message
         real(real64) :: alpha_temp, cl_temp, cd_temp,&
                         cdp_temp, cm_temp, top_xtr_temp, bot_xtr_temp
-        integer :: ios, unit, i, parse_ios, n_rows, current_line_nr
+        integer :: ios, unit, i, parse_ios, n_rows, current_line_nr, comma_pos
+        type(aerodynamic_polar_type) :: polar
+        character(len=128) :: constant_name
+        logical :: reynolds_found = .false., mach_found = .false.
 
         n_rows = 0
         current_line_nr = 0
     
         ! Open the file for reading
         open(newunit=unit, file=filename, status='old', action='read',&
-             iostat=ios, iomsg=error_message)
+            iostat=ios, iomsg=error_message)
         
-             if (ios /= 0) then
+        if (ios /= 0) then
             print *, "Error opening file: ", filename
             print *, "Error message: ", error_message
             error stop
@@ -36,7 +39,9 @@ contains
         ! First pass: Count the number of rows in the file
         do 
             read(unit, '(A)', iostat=ios, iomsg=error_message) line
+
             
+
             if (ios == iostat_end) exit  ! End of file reached
             
             if (ios > 0) then
@@ -52,25 +57,89 @@ contains
             read(line, *, iostat=parse_ios) alpha_temp, cl_temp, cd_temp, &
                  cdp_temp, cm_temp, top_xtr_temp, bot_xtr_temp
 
-            if ((parse_ios /= 0) .and. (n_rows == 0)) cycle  ! Skip lines that are part of the header (only if no valid data has been read yet)
+            if (parse_ios == 0) then
 
-            if ((parse_ios /= 0) .and. (n_rows > 0)) then
-                print *, "Invalid data format in row: ", current_line_nr, " - ", trim(adjustl(line))
+                n_rows = n_rows + 1
+            
+            else if (n_rows == 0) then
+                ! If we haven't counted any rows yet, check for constants
+                comma_pos = index(line, ",")
+
+                if (comma_pos > 0) then
+                
+                    constant_name = trim(adjustl(line(:comma_pos-1)))
+                
+                    select case (constant_name)
+                    
+                    case ("Reynolds number")
+                        read(line(comma_pos+1:), *, iostat=parse_ios) polar%reynolds
+                    
+                        if (parse_ios /= 0) then
+                            close(unit)
+                            error stop "Invalid Reynolds number."
+                        end if
+
+                        reynolds_found = .true.
+                    
+                    case ("Mach")
+                        read(line(comma_pos+1:), *, iostat=parse_ios) polar%mach
+                    
+                        if (parse_ios /= 0) then
+                            close(unit)
+                            error stop "Invalid Mach number."
+                        end if
+
+                        mach_found = .true.
+                    
+                    end select
+                
+                end if
+            
+            else
+            
+                print *, "Invalid data format in row: ", current_line_nr, &
+                         " - ", trim(adjustl(line))
                 close(unit)
                 error stop "Malformed data encountered in the file."
+            
             end if
-                
-            n_rows = n_rows + 1              
 
         end do
 
+        if (.not. reynolds_found) then
+            print *, "Error: Reynolds number not specified in the file."
+            close(unit)
+            error stop
+        end if
+
+        if (.not. mach_found) then
+            print *, "Error: Mach number not specified in the file."        
+            close(unit)
+            error stop
+        end if
+
+        if (polar%reynolds <= 0.0_real64) then
+            print *, "Error: Reynolds number must be positive."
+            close(unit)
+            error stop
+        end if
+
+        if (polar%mach < 0.0_real64) then
+            print *, "Error: Mach number cannot be negative."
+            close(unit)
+            error stop
+        end if
+
+        if (n_rows <= 0) then
+            close(unit)
+            error stop "No aerodynamic data found in the file."
+        end if
+
         ! return to the beginning of the file to read the data
         rewind(unit)
-    
-        ! Allocate the array to hold the data
-        allocate(alpha(n_rows), cl(n_rows), cd(n_rows),&
-                 cdp(n_rows), cm(n_rows), top_xtr(n_rows), bot_xtr(n_rows))
 
+        allocate(polar%alpha(n_rows), polar%cl(n_rows), polar%cd(n_rows),&
+                polar%cm(n_rows))
         i = 0
         
         ! Second pass: Read the data into the arrays
@@ -80,7 +149,7 @@ contains
 
             if (ios == iostat_end) exit  ! End of file reached
             
-            if (ios > 0) then
+            if (ios /= 0) then
                 print *, "Error reading data from file: ", filename
                 print *, "Error message: ", error_message
                 close(unit)
@@ -94,15 +163,16 @@ contains
 
             i = i + 1
 
-            alpha(i) = alpha_temp
-            cl(i) = cl_temp
-            cd(i) = cd_temp
-            cdp(i) = cdp_temp
-            cm(i) = cm_temp
-            top_xtr(i) = top_xtr_temp
-            bot_xtr(i) = bot_xtr_temp
+            polar%alpha(i) = alpha_temp
+            polar%cl(i) = cl_temp
+            polar%cd(i) = cd_temp
+            polar%cm(i) = cm_temp
             
         end do
+
+        ! Assign the polar data to the dataset
+        allocate(dataset%polars(1))
+        dataset%polars(1) = polar
 
         ! Close the file
         close(unit)
