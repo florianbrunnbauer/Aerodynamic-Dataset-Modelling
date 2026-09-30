@@ -1,0 +1,21 @@
+test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Fortran
+        uses: fortran-lang/setup-fortran@v1
+        with:
+          compiler: gcc
+          version: latest
+
+      - name: Set up fpm
+        uses: fortran-lang/setup-fpm@v10
+
+      - name: Build project
+        run: fpm build
+
+      - name: Run tests
+        run: fpm test

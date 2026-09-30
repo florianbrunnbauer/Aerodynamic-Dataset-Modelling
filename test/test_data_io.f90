@@ -73,28 +73,38 @@ program test_data_io
         integer :: i
 
         if (size(actual) /= size(expected)) then
-            print *, "Test ", test_name, " failed: array sizes do not match."
+            print *, "Test failed: ", test_name
+            print *, "Array sizes do not match."
+            print *, "Actual size:   ", size(actual)
+            print *, "Expected size: ", size(expected)
+            error stop
+        end if
+
+        if (size(checkable) /= size(actual)) then
+            print *, "Test setup error: ", test_name
+            print *, "Row index array has a different size."
             error stop
         end if
 
         if (any(abs(actual - expected) > tol) .or. any(ieee_is_nan(actual))) then
 
-            print *, "Test ", test_name, " failed: values do not match within tolerance."
+            print *, "Test failed:", test_name
+            print *, "Values do not match within tolerance."
 
             do i = 1, size(checkable)
-                if ((abs(actual(checkable(i)) - expected(i)) > tol) &
-                    .or. (ieee_is_nan(actual(checkable(i))))) then
-                    print *, "Mismatch at index ", checkable(i), &
-                             ": Expected ", expected(i), &
-                             ", Actual ", actual(checkable(i))
+                if ((abs(actual(i) - expected(i)) > tol) &
+                    .or. (ieee_is_nan(actual(i)))) then
+                    print *, "Dataset row: ", checkable(i)
+                    print *, "Expected ", expected(i)
+                    print *, "Actual ", actual(i)
+                    print *, "Difference: ", abs(actual(i) - expected(i))
+                    error stop
                 end if
             end do
 
-            error stop
-
         end if
 
-        print *, "Test ", test_name, " passed."
+        print *, "Test passed: ", test_name
 
     end subroutine assert_array_close
     

@@ -3,40 +3,76 @@ program test_linear_interpolation
     use linear_interpolation, only: linear_interpolate
     implicit none
 
-    ! Test data for linear interpolation
-    real(real64), parameter :: alpha_values(5) = [-5.0_real64, 0.0_real64, 5.0_real64, 10.0_real64, 15.0_real64]
-    real(real64), parameter :: cl_values(5) = [-0.5_real64, 0.0_real64, 0.5_real64, 1.0_real64, 1.5_real64]
-    real(real64) :: desired_alpha, interpolated_cl, expected_cl, tolerance = 1.0e-10_real64
+    ! Deliberately non-linear overall dataset.
+    ! Each individual interval is still interpolated linearly.
+    real(real64), parameter :: x_values(5) = &
+        [-5.0_real64, 0.0_real64, 5.0_real64, 10.0_real64, 15.0_real64]
 
-    ! Test cases
-    desired_alpha = 2.5_real64
-    expected_cl = 0.25_real64
-    call linear_interpolate(alpha_values, cl_values, desired_alpha, interpolated_cl)
-    if (abs(interpolated_cl - expected_cl) > tolerance) then
-        print *, "Test failed: Interpolated Cl does not match expected value."
-        print *, "Expected: ", expected_cl, " Actual: ", interpolated_cl
-        error stop
-    end if
-    print *, "Test passed: Interpolated Cl matches expected value for alpha =", desired_alpha
+    real(real64), parameter :: y_values(5) = &
+        [-0.5_real64, 0.0_real64, 1.0_real64, 0.5_real64, 1.5_real64]
 
-    desired_alpha = -2.5_real64
-    expected_cl = -0.25_real64
-    call linear_interpolate(alpha_values, cl_values, desired_alpha, interpolated_cl)
-    if (abs(interpolated_cl - expected_cl) > tolerance) then
-        print *, "Test failed: Interpolated Cl does not match expected value."
-        print *, "Expected: ", expected_cl, " Actual: ", interpolated_cl
-        error stop
-    end if
-    print *, "Test passed: Interpolated Cl matches expected value for alpha =", desired_alpha
+    real(real64), parameter :: x_nonuniform(5) = &
+        [-5.0_real64, -1.0_real64, 2.0_real64, 8.0_real64, 15.0_real64]
 
-    desired_alpha = 12.5_real64
-    expected_cl = 1.25_real64
-    call linear_interpolate(alpha_values, cl_values, desired_alpha, interpolated_cl)
-    if (abs(interpolated_cl - expected_cl) > tolerance) then
-        print *, "Test failed: Interpolated Cl does not match expected value."
-        print *, "Expected: ", expected_cl, " Actual: ", interpolated_cl
-        error stop
-    end if
-    print *, "Test passed: Interpolated Cl matches expected value for alpha =", desired_alpha
+    real(real64), parameter :: y_nonuniform(5) = &
+        [-0.5_real64, 0.0_real64, 0.6_real64, 1.2_real64, 0.5_real64]
+
+    call assert_interpolation(x_values, y_values, -5.0_real64, -0.5_real64, &
+                              "lower endpoint")
+
+    call assert_interpolation(x_values, y_values, 15.0_real64, 1.5_real64, &
+                              "upper endpoint")
+
+    call assert_interpolation(x_values, y_values, 5.0_real64, 1.0_real64, &
+                              "exact internal data point")
+
+    call assert_interpolation(x_values, y_values, -2.5_real64, -0.25_real64, &
+                              "first interval")
+
+    call assert_interpolation(x_values, y_values, 2.5_real64, 0.5_real64, &
+                              "second interval")
+
+    call assert_interpolation(x_values, y_values, 7.5_real64, 0.75_real64, &
+                              "third interval")
+
+    call assert_interpolation(x_values, y_values, 12.5_real64, 1.0_real64, &
+                              "last interval")
+                            
+    call assert_interpolation(x_nonuniform, y_nonuniform, -4.0_real64, -0.375_real64, &
+                              "first non-uniform interval")
+
+    call assert_interpolation(x_nonuniform, y_nonuniform, 6.0_real64, 1.0_real64, &
+                              "second non-uniform interval")
+
+    call assert_interpolation(x_nonuniform, y_nonuniform, 2.0_real64, 0.6_real64, &
+                              "exact point in non-uniform dataset")
+
+    print *, "All linear interpolation tests passed."
+
+    contains
+
+        subroutine assert_interpolation(x_vals, y_vals, x, expected, test_name)
+            real(real64), intent(in) :: x_vals(:), y_vals(:)
+            real(real64), intent(in) :: x, expected
+            character(len=*), intent(in) :: test_name
+
+            real(real64), parameter :: tolerance = 1.0e-10_real64
+            real(real64) :: actual
+
+            call linear_interpolate(x_vals, y_vals, x, actual)
+
+            if (abs(actual - expected) > tolerance) then
+                print *, "Test failed: ", test_name
+                print *, "Input:    ", x
+                print *, "Expected: ", expected
+                print *, "Actual:   ", actual
+                print *, "Error:    ", abs(actual - expected)
+                error stop
+            end if
+
+            print *, "Test passed: ", test_name
+
+        end subroutine assert_interpolation
+
 
 end program test_linear_interpolation
