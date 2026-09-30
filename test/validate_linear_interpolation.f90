@@ -5,7 +5,7 @@ program validate_linear_interpolation
     use data_io, only: read_airfoil_data
     implicit none
 
-    character(len=*), parameter :: filename = "../data/naca0012.csv"
+    character(len=*), parameter :: filename = "data/naca0012.csv"
     type(aerodynamic_dataset_type) :: dataset
     real(real64) :: absolute_error_cl(6), absolute_error_cd(6), absolute_error_cm(6), delta_cl(6), &
                         delta_cd(6), delta_cm(6)
@@ -39,7 +39,7 @@ program validate_linear_interpolation
         real(real64), intent(out) :: expected(:), interpolated(:), delta(:), absolute_error(:)
 
         real(real64) :: desired(size(skip)), desired_cleared(size(desired_raw)-size(skip)),&
-                         expected_cleared(size(desired_raw)-size(skip))
+                         expected_cleared(size(desired_raw)-size(skip)), relative_error(size(skip))
         real(real64) :: rmse
         integer :: skipped, i, n
 
@@ -71,11 +71,17 @@ program validate_linear_interpolation
 
         absolute_error = sqrt((interpolated(:) - expected(:))**2)
 
+        relative_error = absolute_error(:) * 100 / expected(:)
+
         rmse = sqrt(sum(delta**2))/real(size(delta),real64)
 
-        print *, "Evaluated ", current_coefficient, " for", expected, "at", skip_rows
-        print *, "Interpolation result", interpolated(:)
-        print *, "Error:", delta, "Absolut Error:", absolute_error
+        print *, "------- Evaluated ", current_coefficient, " -------"
+        print *, "Expected:", expected
+        print *, "Expected values are at Positions:", skip_rows
+        print *, "Interpolation result:", interpolated(:)
+        print *, "Error:", delta
+        print *, "Absolut Error:", absolute_error
+        print *, "Relative Absolut Error:", relative_error
         print *, "Root mean square Error:", rmse
 
     end subroutine evaluate

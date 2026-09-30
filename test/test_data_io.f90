@@ -7,7 +7,7 @@ program test_data_io
     implicit none
 
     character(len=*), parameter :: filename = & 
-        "../data/naca0012.csv"
+        "data/naca0012.csv"
     type(aerodynamic_dataset_type) :: dataset
 
     integer, parameter :: expected_rows = 147

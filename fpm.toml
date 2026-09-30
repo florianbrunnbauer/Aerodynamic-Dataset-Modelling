@@ -1,0 +1,7 @@
+name = "aerodynamic-dataset-modelling"
+version = "0.1.0"
+
+[build]
+auto-executables = true
+auto-tests = true
+auto-examples = false

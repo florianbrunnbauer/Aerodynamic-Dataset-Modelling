@@ -5,7 +5,7 @@ program main
     use linear_interpolation, only: linear_interpolate
     implicit none
     
-    character(len=*), parameter :: filename = "../data/naca0012.csv"
+    character(len=*), parameter :: filename = "data/naca0012.csv"
     type(aerodynamic_dataset_type) :: dataset
     real(real64) :: interpolater_value, interpolated_value
 

@@ -1,0 +1,11 @@
+# fpm build output
+build/
+
+# Fortran compiler output
+*.o
+*.mod
+*.smod
+*.a
+
+# Local executables
+*.out
