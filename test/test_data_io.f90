@@ -38,6 +38,11 @@ program test_data_io
 
     integer :: rows_to_check(4) = [1, 2, expected_rows-1, expected_rows]
 
+    print *
+    print *, "========================================"
+    print *, "Test: Data I/O 1-D aerodynamic dataset"
+    print *, "========================================"
+    print *
 
     call read_airfoil_data(filename, dataset)
 
@@ -62,6 +67,10 @@ program test_data_io
                             rows_to_check, tolerance, "Cd values")
     call assert_array_close(dataset%polars(1)%cm(rows_to_check), expected_cms, &
                             rows_to_check, tolerance, "Cm values")
+
+    print *
+    print *, "PASS: Data I/O 1-D aerodynamic dataset"
+    print *
 
     contains
 

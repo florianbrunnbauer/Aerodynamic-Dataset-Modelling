@@ -19,6 +19,12 @@ program validate_linear_interpolation
     real(real64), parameter :: rmse_limit_cl = 3.0e-3_real64
     real(real64), parameter :: rmse_limit_cd = 2.0e-4_real64
     real(real64), parameter :: rmse_limit_cm = 4.0e-4_real64
+
+    print *
+    print *, "========================================"
+    print *, "Validation: Linear interpolation"
+    print *, "========================================"
+    print *
     
     ! Read the airfoil data from the CSV file
     call read_airfoil_data(filename, dataset)
@@ -44,7 +50,9 @@ program validate_linear_interpolation
     call assert_validation("cm", rmse_cm, max_error_cm,&
                                 rmse_limit_cm, max_error_limit_cm)
 
+    print *
     print *, "All interpolation validation tests passed."
+    print *
 
     contains
 
@@ -93,13 +101,13 @@ program validate_linear_interpolation
         max_error = maxval(absolute_error)
 
         print *, "------- Evaluated ", current_coefficient, " -------"
-        print *, "Expected:", expected
-        print *, "Positions:", skip
-        print *, "Interpolated:", interpolated
-        print *, "Error:", delta
-        print *, "Absolute Error:", absolute_error
-        print *, "Maximum Absolute Error:", max_error
-        print *, "RMSE:", rmse
+        ! print *, "Expected:", expected
+        ! print *, "Positions:", skip
+        ! print *, "Interpolated:", interpolated
+        ! print *, "Error:", delta
+        ! print *, "Absolute Error:", absolute_error
+        ! print *, "Maximum Absolute Error:", max_error
+        ! print *, "RMSE:", rmse
 
     end subroutine evaluate
 

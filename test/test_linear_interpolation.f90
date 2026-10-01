@@ -17,6 +17,12 @@ program test_linear_interpolation
     real(real64), parameter :: y_nonuniform(5) = &
         [-0.5_real64, 0.0_real64, 0.6_real64, 1.2_real64, 0.5_real64]
 
+    print *
+    print *, "========================================"
+    print *, "Test: Linear interpolation"
+    print *, "========================================"
+    print *
+
     call assert_interpolation(x_values, y_values, -5.0_real64, -0.5_real64, &
                               "lower endpoint")
 
@@ -47,7 +53,9 @@ program test_linear_interpolation
     call assert_interpolation(x_nonuniform, y_nonuniform, 2.0_real64, 0.6_real64, &
                               "exact point in non-uniform dataset")
 
-    print *, "All linear interpolation tests passed."
+    print *
+    print *, "PASS: Linear Interpolation Tests"
+    print *
 
     contains
 
