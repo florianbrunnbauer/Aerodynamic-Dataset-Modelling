@@ -22,7 +22,7 @@ program test_run_selection_dataset
     call build_run_catalogue("data/phase_2", catalogue, stat)
 
     if (stat /= 0) then
-        error stop "FAILED: catalogue creation"
+        error stop "FAILED: Catalogue creation"
     end if
 
 
@@ -41,21 +41,21 @@ program test_run_selection_dataset
     do i = 1, size(selected_runs)
         
         if (selected_runs(i)%config /= selection%config) then
-            error stop "Selected run has incorrect config."
+            error stop "FAILED: Selected run has incorrect config."
         end if
 
         if (selected_runs(i)%confts /= selection%confts) then
-            error stop "Selected run has incorrect confts."
+            error stop "FAILED: Selected run has incorrect confts."
         end if
 
         if (selected_runs(i)%conft /= selection%conft) then
-            error stop "Selected run has incorrect conft."
+            error stop "FAILED: Selected run has incorrect conft."
         end if
 
     end do
 
     print *
-    print *, "PASS: run selection dataset"
+    print *, "PASSED: run selection dataset"
     print *
 
 end program test_run_selection_dataset

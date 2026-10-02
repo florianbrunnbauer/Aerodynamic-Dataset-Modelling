@@ -51,7 +51,7 @@ program validate_linear_interpolation
                                 rmse_limit_cm, max_error_limit_cm)
 
     print *
-    print *, "All interpolation validation tests passed."
+    print *, "PASSED: Interpolation validation tests"
     print *
 
     contains
@@ -122,14 +122,24 @@ program validate_linear_interpolation
             print *, "Validation failed for ", coefficient
             print *, "RMSE:          ", rmse
             print *, "Allowed RMSE:  ", rmse_limit
-            error stop
+
+            print *
+            print *, "FAILED: Validate linear interpolation"
+            print *
+
+            error stop 1
         end if
 
         if (max_error > max_error_limit) then
             print *, "Validation failed for ", coefficient
             print *, "Maximum error:         ", max_error
             print *, "Allowed maximum error: ", max_error_limit
-            error stop
+
+            print *
+            print *, "FAILED: Validate linear interpolation"
+            print *
+            
+            error stop 1
         end if
 
         print *, "Validation passed for ", coefficient

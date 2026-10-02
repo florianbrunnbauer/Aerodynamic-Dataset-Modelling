@@ -46,7 +46,7 @@ program test_dataset_catalogue
     end do
 
     print *
-    print *, "PASS: CRM dataset catalogue"
+    print *, "PASSED: CRM dataset catalogue"
     print *
 
 end program test_dataset_catalogue

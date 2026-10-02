@@ -48,13 +48,13 @@ program test_data_io
 
     ! Check if the Reynolds number and Mach number are as expected
     if (abs(dataset%polars(1)%reynolds - expected_reynolds) > tolerance) then
-        print *, "Test failed: Reynolds number does not match expected value."
+        print *, "FAILED: Reynolds number does not match expected value."
         print *, "Expected: ", expected_reynolds, " Actual: ", dataset%polars(1)%reynolds
         error stop
     end if
 
     if (abs(dataset%polars(1)%mach - expected_mach) > tolerance) then
-        print *, "Test failed: Mach number does not match expected value."
+        print *, "FAILED: Mach number does not match expected value."
         print *, "Expected: ", expected_mach, " Actual: ", dataset%polars(1)%mach
         error stop
     end if
@@ -69,7 +69,7 @@ program test_data_io
                             rows_to_check, tolerance, "Cm values")
 
     print *
-    print *, "PASS: Data I/O 1-D aerodynamic dataset"
+    print *, "PASSED: Data I/O 1-D aerodynamic dataset"
     print *
 
     contains

@@ -54,7 +54,7 @@ program test_linear_interpolation
                               "exact point in non-uniform dataset")
 
     print *
-    print *, "PASS: Linear Interpolation Tests"
+    print *, "PASSED: Linear Interpolation Tests"
     print *
 
     contains
@@ -75,7 +75,11 @@ program test_linear_interpolation
                 print *, "Expected: ", expected
                 print *, "Actual:   ", actual
                 print *, "Error:    ", abs(actual - expected)
-                error stop
+
+                print * 
+                print *, "FAILED: Linear interpolation test"
+                print * 
+                error stop 1
             end if
 
             print *, "Test passed: ", test_name

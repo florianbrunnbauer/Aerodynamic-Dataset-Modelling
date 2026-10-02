@@ -155,7 +155,7 @@ program test_crm_dataset_reader
                     error stop "FAILED: cm mismatch"
                 end if
 
-                print *, "PASS: Run ", dataset%runs(i)%info%filename, " matches reference data."
+                print *, "PASSED: Run ", dataset%runs(i)%info%filename, " matches reference data."
 
                 exit reference_loop
 
@@ -169,7 +169,7 @@ program test_crm_dataset_reader
     end do dataset_loop
 
     print *
-    print *, "PASS: CRM dataset reader"
+    print *, "PASSED: CRM dataset reader"
     print *
 
 end program test_crm_dataset_reader

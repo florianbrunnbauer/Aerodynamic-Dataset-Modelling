@@ -3,10 +3,15 @@ name: Fortran Tests
 on: 
   push:
   pull_request:
+  workflow_dispatch:
+
+permissions: 
+  contents: read
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repository
@@ -16,13 +21,25 @@ jobs:
         uses: fortran-lang/setup-fortran@v1
         with:
           compiler: gcc
-          version: latest
+          version: "14"
 
       - name: Set up fpm
         uses: fortran-lang/setup-fpm@v10
+        with:
+          fpm-version: "0.13.0"
+
+      - name: Verify test data
+        run: |
+          test -f data/naca0012.csv
+          test -d data/phase_2
+          test -f data/phase_2/t197R39.csv
+
+      - name: Show discovered test sources
+        run: |
+          find test -maxdepth 1 -type f -name '*.f90' -print | sort
 
       - name: Build project
-        run: fpm build
+        run: fpm build --profile debug
 
-      - name: Run tests
-        run: fpm test
+      - name: Run all tests
+        run: fpm test --profile debug

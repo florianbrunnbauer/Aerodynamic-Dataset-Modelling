@@ -146,7 +146,7 @@ program test_crm_dataset_integration
     print *, "Loaded runs:             ", size(dataset%runs)
 
     print *
-    print *, "PASS: CRM dataset integration"
+    print *, "PASSED: CRM dataset integration"
     print *
 
 

@@ -27,7 +27,7 @@ program test_run_matching
     info%conft = 99
 
     if (.not. run_matches(info, selection)) then
-        error stop "Matching run rejected."
+        error stop "FAILED: Matching run rejected."
     end if
 
     selection%config = 2
@@ -35,7 +35,7 @@ program test_run_matching
     selection%conft  = 99
 
     if (run_matches(info, selection)) then
-        error stop "Non-matching run accepted."
+        error stop "FAILED: Non-matching run accepted."
     end if
 
     info%config = 2
@@ -43,25 +43,25 @@ program test_run_matching
     info%conft = 0
 
     if (run_matches(info, selection)) then
-        error stop "Non-matching run accepted. Mismatched conft: info = 0, selection = 99"
+        error stop "FAILED: Non-matching run accepted. Mismatched conft: info = 0, selection = 99"
     end if
 
     info%config = 1
     info%conft = 99
 
     if (run_matches(info, selection)) then
-        error stop "Non-matching run accepted. Mismatched config: info = 1, selection = 2"
+        error stop "FAILED: Non-matching run accepted. Mismatched config: info = 1, selection = 2"
     end if
 
     info%config = 2
     info%confts = 1
 
     if (run_matches(info, selection)) then
-        error stop "Non-matching run accepted. Mismatched confts: info = 1, selection = 0"
+        error stop "FAILED: Non-matching run accepted. Mismatched confts: info = 1, selection = 0"
     end if
 
     print *
-    print *, "PASS: CRM run matching"
+    print *, "PASSED: CRM run matching"
     print *
 
 end program test_run_matching

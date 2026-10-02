@@ -37,7 +37,7 @@ program test_read_crm_run
 
     ! Number of measurement points.
     if (size(run%alpha) /= 35) then
-        error stop "FAILED: number of measurement points"
+        error stop "FAILED: Number of measurement points"
     end if
 
 
@@ -48,7 +48,7 @@ program test_read_crm_run
         size(run%cd) /= 35 .or. &
         size(run%cm) /= 35) then
 
-        error stop "FAILED: inconsistent array sizes"
+        error stop "FAILED: Inconsistent array sizes"
     end if
 
 
@@ -81,7 +81,7 @@ program test_read_crm_run
     end if
 
     print *
-    print *, "PASS: CRM run reader"
+    print *, "PASSED: CRM run reader"
     print *
 
 end program test_read_crm_run
