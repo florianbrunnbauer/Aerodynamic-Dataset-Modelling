@@ -1,11 +1,11 @@
 name: Fortran Tests
 
-on: 
+on:
   push:
   pull_request:
   workflow_dispatch:
 
-permissions: 
+permissions:
   contents: read
 
 jobs:
@@ -27,6 +27,11 @@ jobs:
         uses: fortran-lang/setup-fpm@v10
         with:
           fpm-version: "0.13.0"
+
+      - name: Show tool versions
+        run: |
+          gfortran --version
+          fpm --version
 
       - name: Verify test data
         run: |
