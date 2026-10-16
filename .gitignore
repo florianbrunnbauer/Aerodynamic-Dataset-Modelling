@@ -9,3 +9,6 @@ build/
 
 # Local executables
 *.out
+
+# Interpolation validation results
+interpolation_*
