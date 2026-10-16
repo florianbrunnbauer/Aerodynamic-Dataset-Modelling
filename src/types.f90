@@ -228,4 +228,53 @@ module types
     
     end type representative_dataset_type
 
+    !--------------------------------
+    ! Types for atmosphere
+    !--------------------------------
+
+    type :: atmosphere_state_type
+        real(real64) :: geometric_altitude=0.0_real64             ! [m above sea level]
+        real(real64) :: geopotential_altitude=0.0_real64          ! [m]
+        real(real64) :: temperature=0.0_real64                    ! [K]
+        real(real64) :: pressure=0.0_real64                       ! [Pa]
+        real(real64) :: density=0.0_real64                        ! [kg/m^3]
+        real(real64) :: speed_of_sound=0.0_real64                 ! [m/s]
+        real(real64) :: dynamic_viscosity=0.0_real64              ! [Pa s = kg/(m s)]
+    end type atmosphere_state_type
+
+    !--------------------------------
+    ! Types for flight conditions
+    !--------------------------------
+
+    type :: flight_condition_type
+
+        type(atmosphere_state_type) :: air
+        logical :: accepted=.false.
+        integer :: atmosphere_stat = -1
+        integer :: coefficient_stat = -1
+        real(real64) :: alpha = 0.0_real64                      ! degrees
+        real(real64) :: mach = 0.0_real64                       ! dimensionless
+        real(real64) :: reference_length = 0.0_real64           ! m; definition used for dataset Re
+        real(real64) :: nominal_reynolds = 0.0_real64
+        real(real64) :: reynolds_tolerance = 0.0_real64         ! relative, explicit caller policy
+        real(real64) :: speed = 0.0_real64                      ! m/s
+        real(real64) :: dynamic_pressure = 0.0_real64           ! Pa
+        real(real64) :: reynolds = 0.0_real64
+        real(real64) :: relative_reynolds_mismatch = 0.0_real64
+        real(real64) :: observed_reynolds_min = 0.0_real64
+        real(real64) :: observed_reynolds_max = 0.0_real64
+        real(real64) :: cl = 0.0_real64, cd = 0.0_real64, cm = 0.0_real64
+
+    end type
+
+    type :: reference_conditions
+
+        real(real64) :: reference_length   = 0.0_real64
+        real(real64) :: reference_area     = 0.0_real64
+        real(real64) :: reference_chord    = 0.0_real64
+        real(real64) :: re_tolerance       = 0.0_real64
+        integer      :: re_number_position = 0.0_real64
+
+    end type
+
 end module types

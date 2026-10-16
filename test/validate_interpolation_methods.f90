@@ -237,11 +237,11 @@ contains
             call fatal('Run outside the selected Reynolds group (5e6 +/- 5%).')
     end subroutine check_run
 
-    subroutine coefficient_array(run, coefficient, output)
+    subroutine coefficient_array(run, coefficient_to_query, output)
         type(aero_run_type), intent(in) :: run
-        integer, intent(in) :: coefficient
+        integer, intent(in) :: coefficient_to_query
         real(real64), intent(out) :: output(:)
-        select case(coefficient)
+        select case(coefficient_to_query)
         case(1)
             output = run%cl
         case(2)
@@ -251,11 +251,11 @@ contains
         end select
     end subroutine coefficient_array
 
-    function coefficient_value(run, coefficient, point) result(value)
+    function coefficient_value(run, coefficient_to_query, point) result(value)
         type(aero_run_type), intent(in) :: run
-        integer, intent(in) :: coefficient, point
+        integer, intent(in) :: coefficient_to_query, point
         real(real64) :: value
-        select case(coefficient)
+        select case(coefficient_to_query)
         case(1)
             value = run%cl(point)
         case(2)
@@ -285,12 +285,12 @@ contains
         if (.not. ieee_is_finite(output)) call fatal('Nonfinite interpolation result.')
     end subroutine interpolate_alpha
 
-    subroutine evaluate_sweep(run, coefficient, selected_method, query, output)
+    subroutine evaluate_sweep(run, coefficient_to_evaluate, selected_method, query, output)
         type(aero_run_type), intent(in) :: run
-        integer, intent(in) :: coefficient, selected_method
+        integer, intent(in) :: coefficient_to_evaluate, selected_method
         real(real64), intent(in) :: query
         real(real64), intent(out) :: output
-        select case(coefficient)
+        select case(coefficient_to_evaluate)
         case(1)
             call interpolate_alpha(run%alpha, run%cl, query, selected_method, output)
         case(2)
