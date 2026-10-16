@@ -35,7 +35,7 @@ program validate_interpolation_methods
     integer :: i, j, k, method, coefficient, n, stat, details_unit, summary_unit
     integer :: outside_alpha, outside_mach, eligible
 
-    data_directory = argument_or_default(1, 'data')
+    data_directory = argument_or_default(1, 'data/phase_2')
     output_prefix = argument_or_default(2, 'interpolation_validation')
     if (command_argument_count() > 2) error stop 'Usage: validator [data_directory] [output_prefix]'
 

@@ -5,12 +5,14 @@ program test_flight_condition_validation
                      grouped_dataset_type, dataset_validation_result_type, &
                      central_flight_condition_type => flight_condition_type
     use standard_atmosphere, only: atmosphere_state_type, calculate_atmosphere, atmosphere_ok, atmosphere_outside_range
-    use coefficient_query_v2, only: query_alpha_outside, query_mach_outside, query_invalid_method
+    use coefficient_query, only: query_alpha_outside, query_mach_outside, query_invalid_method
     use dataset_validation, only: validate_dataset
     use dataset_grouping, only: group_dataset
     use dataset_representative, only: build_representative_dataset
     use flight_condition_validation
+
     implicit none
+
     type(aero_run_type) :: runs(2)
     type(aero_dataset_type) :: data, bad, empty
     type(representative_dataset_type) :: structure, bad_structure, empty_structure, representatives
@@ -22,6 +24,7 @@ program test_flight_condition_validation
     real(real64) :: length, altitude, nan, endpoint_re, nominal, trial_length
     character(len=6),parameter :: methods(3) = [character(len=6) :: 'linear','pchip','akima']
     integer :: i,m,stat,checks,g
+    
     checks = 0
     nominal = 5.0e6_real64
     nan = ieee_value(0.0_real64,ieee_quiet_nan)
