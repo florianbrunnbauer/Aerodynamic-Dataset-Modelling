@@ -28,13 +28,16 @@ program test_flight_condition_validation
     checks = 0
     nominal = 5.0e6_real64
     nan = ieee_value(0.0_real64,ieee_quiet_nan)
+    
     print '(a)', ''
     print '(a)', '=== test_flight_condition_validation ==='
+
     call calculate_atmosphere(10000.0_real64,air,stat)
     call check(stat == atmosphere_ok,'reference atmosphere')
     ! Synthetic geometry chosen once to make Re=5e6 at a known test condition.
     ! Production calls must supply fixed actual geometry, never adjust it to pass.
     length = nominal*air%dynamic_viscosity/(air%density*0.75_real64*air%speed_of_sound)
+
     do i = 1, 2
         allocate(runs(i)%alpha(5),runs(i)%mach(5),runs(i)%reynolds(5), &
                  runs(i)%cl(5),runs(i)%cd(5),runs(i)%cm(5))
@@ -59,16 +62,21 @@ program test_flight_condition_validation
     data%runs(3) = runs(1)
     data%runs(4) = runs(1)
     data%runs(5) = runs(2)
+
     do i = 1, 5
         data%runs(i)%info%run = 100+i
     end do
+
     data%runs(3)%cl = data%runs(3)%cl+100.0_real64
     data%runs(3)%reynolds = nominal*1.01_real64
+
     call trim_run(data%runs(3),4)
+
     do i = 2, 5, 3
         data%runs(i)%reynolds = 30.0e6_real64
         data%runs(i)%cl = data%runs(i)%cl+10.0_real64
     end do
+
     allocate(structure%reynolds_groups(2))
     structure%reynolds_groups(1)%nominal_reynolds = nominal
     allocate(structure%reynolds_groups(1)%mach_groups(2))
@@ -82,6 +90,7 @@ program test_flight_condition_validation
     structure%reynolds_groups(2)%mach_groups(1)%run_index = 2
     structure%reynolds_groups(2)%mach_groups(2)%nominal_mach = 0.8_real64
     structure%reynolds_groups(2)%mach_groups(2)%run_index = 5
+
     do m = 1, 3
         call validate_flight_condition(data,structure,1,10000.0_real64,0.75_real64,1.0_real64,length, &
                                        0.0_real64,condition,stat,alpha_method=trim(methods(m)))
@@ -95,6 +104,7 @@ program test_flight_condition_validation
         call close_to(condition%observed_reynolds_min,nominal,1.0e-12_real64)
         call close_to(condition%observed_reynolds_max,nominal,1.0e-12_real64)
     end do
+
     call validate_flight_condition(data,structure,1,10000.0_real64,0.75_real64,1.0_real64,length, &
                                    0.001_real64,condition,stat,use_mean_mach=.true.)
     call check(stat == flight_ok,'optional mean-Mach forwarding')
@@ -155,6 +165,7 @@ program test_flight_condition_validation
     call close_to(condition%nominal_reynolds,30.0e6_real64,1.0e-12_real64)
     call close_to(condition%observed_reynolds_min,30.0e6_real64,1.0e-12_real64)
     call close_to(condition%relative_reynolds_mismatch,5.0_real64/6.0_real64,1.0e-12_real64)
+
     do m = 1, 3
         call validate_flight_condition(data,structure,2,10000.0_real64,0.75_real64,1.0_real64,6.0_real64*length, &
                                        0.0_real64,condition,stat,trim(methods(m)))
@@ -164,10 +175,12 @@ program test_flight_condition_validation
         call close_to(condition%reynolds,30.0e6_real64,1.0e-12_real64)
         call close_to(condition%observed_reynolds_max,30.0e6_real64,1.0e-12_real64)
     end do
+
     ! Measured Re extrema describe representative sweeps without redefining nominal Re.
     bad = data
     bad%runs(1)%reynolds = nominal+[-1.0e4_real64,0.0_real64,1.0e4_real64,0.0_real64,0.0_real64]
     bad%runs(4)%reynolds = nominal+[0.0_real64,0.0_real64,2.0e4_real64,0.0_real64,0.0_real64]
+
     call validate_flight_condition(bad,structure,1,10000.0_real64,0.75_real64,1.0_real64,length, &
                                    0.0_real64,condition,stat)
     call check(stat == flight_ok,'nominal group survives measured Reynolds variation')
@@ -226,6 +239,7 @@ program test_flight_condition_validation
     bad_structure%reynolds_groups(1)%mach_groups(:2) = structure%reynolds_groups(1)%mach_groups
     bad_structure%reynolds_groups(1)%mach_groups(3)%nominal_mach = 0.75_real64
     bad_structure%reynolds_groups(1)%mach_groups(3)%run_index = 3
+
     do m = 1, 3
         call validate_flight_condition(bad,bad_structure,1,10000.0_real64,0.75_real64,1.0_real64,length, &
                                        0.0_real64,condition,stat,trim(methods(m)))
@@ -235,12 +249,18 @@ program test_flight_condition_validation
 
     ! Build structure with the actual preparation modules, then validate flight conditions.
     call validate_dataset(data,validation)
+
     call check(validation%is_valid,'full dataset passes upstream validation')
+
     call group_dataset(data,grouped,stat)
+
     call check(stat == 0,'full dataset groups successfully')
+
     call build_representative_dataset(data,grouped,representatives,stat)
+
     call check(stat == 0,'representative structure builds successfully')
     call check(size(representatives%reynolds_groups) == 2,'both Reynolds groups retained')
+
     do g = 1, size(representatives%reynolds_groups)
         trial_length = length*representatives%reynolds_groups(g)%nominal_reynolds/nominal
         do m = 1, 3
@@ -266,14 +286,18 @@ program test_flight_condition_validation
     call check(stat == flight_ok.and.condition%accepted,'solver result passes full validation')
     call validate_flight_condition(data,structure,1,0.0_real64,0.75_real64,1.0_real64,length, &
                                    0.001_real64,condition,stat)
+
     endpoint_re = condition%reynolds
+
     call find_reynolds_matched_altitude(0.75_real64,length,endpoint_re,altitude,stat)
     call check(stat == flight_ok.and.altitude == 0.0_real64,'sea-level root endpoint')
     call find_reynolds_matched_altitude(0.75_real64,length,2.0_real64*endpoint_re,altitude,stat)
     call check(stat == flight_no_matching_altitude.and.ieee_is_nan(altitude),'target above range rejected')
     call validate_flight_condition(data,structure,1,32000.0_real64,0.75_real64,1.0_real64,length, &
                                    0.001_real64,condition,stat)
+
     endpoint_re = condition%reynolds
+
     call find_reynolds_matched_altitude(0.75_real64,length,endpoint_re,altitude,stat)
     call check(stat == flight_ok.and.altitude == 32000.0_real64,'upper-altitude root endpoint')
     call find_reynolds_matched_altitude(0.75_real64,length,0.5_real64*endpoint_re,altitude,stat)
@@ -282,17 +306,21 @@ program test_flight_condition_validation
     call check(stat == flight_invalid_input.and.ieee_is_nan(altitude),'invalid solver tolerance')
     call find_reynolds_matched_altitude(0.75_real64,length,nan,altitude,stat)
     call check(stat == flight_invalid_input.and.ieee_is_nan(altitude),'invalid target Re')
+
     print '(a,i0,a)', 'PASS: ',checks,' assertions'
+
 contains
-    subroutine check(condition,label)
-        logical,intent(in) :: condition
+
+    subroutine check(current_condition,label)
+        logical,intent(in) :: current_condition
         character(len=*),intent(in) :: label
         checks = checks+1
-        if (.not. condition) then
+        if (.not. current_condition) then
             print '(a)', 'FAIL: '//label
             error stop 1
         end if
     end subroutine
+
     subroutine close_to(actual,target,tolerance)
         real(real64),intent(in) :: actual,target,tolerance
         call check(abs(actual-target)<=tolerance*max(1.0_real64,abs(target)),'numeric result')

@@ -4,7 +4,7 @@ A Fortran command-line tool for exploring aerodynamic datasets and estimating li
 
 The application prepares NASA Common Research Model (CRM) wind-tunnel runs, queries aerodynamic coefficients in angle of attack and Mach number, and combines them with a standard atmosphere and user-supplied reference geometry to calculate dimensional loads. The project also includes an XFOIL NACA 0012 example and numerical validation programs.
 
-[Quick start](#quick-start) · [Using the application](#using-the-application) · [Model and limits](#model-and-limits) · [Tests](#tests-and-interpolation-validation) · [Data and references](#data-and-references)
+[Quick start](#quick-start) · [Using the application](#using-the-application) · [Model and limits](#model-and-limits) · [Documentation](#documentation) · [Tests](#tests-and-interpolation-validation) · [Data and references](#data-and-references)
 
 ## What it does
 
@@ -74,7 +74,7 @@ For each query, the coefficient model uses representatives from the selected Rey
 The implemented load calculations are:
 
 $$
-V=Ma\,a,\qquad q=\frac{1}{2}\rho V^2,\qquad
+V=Ma\cdot a,\qquad q=\frac{1}{2}\rho V^2,\qquad
 Re=\frac{\rho V\ell_{\mathrm{ref}}}{\mu}
 $$
 
@@ -90,6 +90,19 @@ $$
 - **Interpolation is not an accuracy guarantee.** Wider gaps between supported sweeps may increase error. Akima requires at least five points in each required sweep; linear and PCHIP accept two.
 - **Reference conventions are preserved.** Loads retain coefficient signs and the dataset's pitching-moment reference point. Geometry inputs must be consistent with the coefficient definitions.
 - **This is a dataset-based analysis tool.** It does not establish trim, lift–weight balance, aircraft performance limits, dynamic stability, or an operational flight envelope. `Cl/Cd` is calculated for the requested condition; an automatic efficiency search is not implemented.
+
+## Documentation
+
+Start with the [architecture](docs/architecture.md) for data ownership, the preparation/query flow, validation responsibilities and numerical policy. The [module reference](docs/modules/README.md) documents every module's public interface, units, behavior, errors, examples and test links.
+
+| Area | Module references |
+|---|---|
+| Shared records | [types](docs/modules/types.md) |
+| Discovery and loading | [dataset_catalogue](docs/modules/dataset_catalogue.md), [run_selection](docs/modules/run_selection.md), [data_io](docs/modules/data_io.md) |
+| Preparation | [dataset_validation](docs/modules/dataset_validation.md), [dataset_grouping](docs/modules/dataset_grouping.md), [dataset_representative](docs/modules/dataset_representative.md) |
+| Diagnostics | [dataset_characterisation](docs/modules/dataset_characterisation.md), [dataset_repeatability](docs/modules/dataset_repeatability.md) |
+| Interpolation | [linear_interpolation](docs/modules/linear_interpolation.md), [pchip_interpolation](docs/modules/pchip_interpolation.md), [akima_interpolation](docs/modules/akima_interpolation.md) |
+| Queries and physics | [coefficient_query](docs/modules/coefficient_query.md), [standard_atmosphere](docs/modules/standard_atmosphere.md), [flight_condition_validation](docs/modules/flight_condition_validation.md), [aerodynamic_properties](docs/modules/aerodynamic_properties.md) |
 
 ## Tests and interpolation validation
 
@@ -126,6 +139,7 @@ These results characterize the tested curves and held-out intervals; they are no
 |---|---|
 | [`app/main.f90`](app/main.f90) | Interactive application and result reporting |
 | [`src/`](src/) | Readers, preparation pipeline, interpolation, coefficient queries, atmosphere, flight-condition checks, and load calculations |
+| [`docs/`](docs/architecture.md) | Architecture and complete module reference |
 | [`test/`](test/) | Unit tests, integration tests, and interpolation validation programs |
 | [`data/phase_2/`](data/phase_2/) | Bundled CRM Test 197 run CSVs |
 | [`data/naca0012.csv`](data/naca0012.csv) | XFOIL NACA 0012 polar used by the original reader/interpolation example |
