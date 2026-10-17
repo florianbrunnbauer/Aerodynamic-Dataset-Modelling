@@ -60,6 +60,12 @@ end program linear_interpolation_example
 
 Project dependencies: No project-module dependency..
 
+Coverage, fixtures, tolerances, commands and limitations:
+
+- [Interpolation algorithm regression tests](../tests/interpolation-regression.md).
+- [Prepared coefficient queries and supported Mach gaps](../tests/coefficient-queries.md).
+- [Held-out interpolation validation](../tests/interpolation-validation.md).
+
 Relevant test/validation sources:
 
 - [`test_linear_interpolation.f90`](../../test/test_linear_interpolation.f90)

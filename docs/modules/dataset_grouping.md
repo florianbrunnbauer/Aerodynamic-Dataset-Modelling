@@ -104,6 +104,11 @@ end program grouping_example
 
 Project dependencies: [types](types.md).
 
+Coverage, fixtures, tolerances, commands and limitations:
+
+- [Nominal Reynolds and Mach grouping](../tests/dataset-grouping.md).
+- [Prepared coefficient queries and supported Mach gaps](../tests/coefficient-queries.md).
+
 Relevant test/validation sources:
 
 - [`test_dataset_grouping.f90`](../../test/test_dataset_grouping.f90)

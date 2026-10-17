@@ -132,6 +132,11 @@ end program read_crm_example
 
 Project dependencies: [types](types.md).
 
+Coverage, fixtures, tolerances, commands and limitations:
+
+- [Dataset discovery, selection and loading](../tests/data-loading.md).
+- [Held-out interpolation validation](../tests/interpolation-validation.md).
+
 Relevant test/validation sources:
 
 - [`test_data_io.f90`](../../test/test_data_io.f90)

@@ -112,6 +112,10 @@ end program repeatability_example
 
 Project dependencies: [types](types.md), [linear_interpolation](linear_interpolation.md).
 
+Coverage, fixtures, tolerances, commands and limitations:
+
+- [Repeatability across repeated sweeps](../tests/dataset-repeatability.md).
+
 Relevant test/validation sources:
 
 - [`test_dataset_repeatability.f90`](../../test/test_dataset_repeatability.f90)

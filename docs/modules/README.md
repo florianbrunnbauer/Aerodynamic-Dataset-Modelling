@@ -2,7 +2,7 @@
 
 [Repository home](../../README.md) · [Architecture](../architecture.md)
 
-This reference covers every module currently in `src/`. Each page documents its preparation contract, public procedures and arguments, units, algorithms, failure handling, usage example, dependencies and relevant test sources. The `types` page instead lists the shared records and every component.
+This reference covers every module currently in `src/`. Each page documents its preparation contract, public procedures and arguments, units, algorithms, failure handling, usage example, dependencies and links to functionality-based test documentation and relevant test sources. The `types` page instead lists the shared records and every component.
 
 Start with the architecture and shared types, then follow catalogue → selection → reading → validation → grouping → representative selection. Read the coefficient and flight-condition pages for repeated queries. Characterisation and repeatability are optional analysis paths.
 
@@ -33,4 +33,6 @@ Preparation examples check each status and validation report before continuing. 
 
 ## Tests
 
-Each page links directly to the relevant files in `test/`. Run `fpm test --profile debug` from the repository root; see the [README test instructions](../../README.md#tests-and-interpolation-validation) for individual targets and exported validation results. A test link identifies relevant coverage, not proof of every input or physical condition. Dedicated pages under `docs/test/` can be added separately without changing this module-reference layout.
+The [test index](../tests/README.md) groups related unit and integration programs by functionality. Each module page links directly to its corresponding coverage, fixtures, reference values, tolerances, execution commands and limitations, while retaining links to the test sources.
+
+Run `fpm test --profile debug` from the repository root. The [held-out interpolation validation page](../tests/interpolation-validation.md) separately explains the NACA fixed holdout and CRM method comparison, including their different acceptance rules and exported results. A coverage link does not imply that every edge case or aerodynamic condition is validated.

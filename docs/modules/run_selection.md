@@ -71,6 +71,10 @@ end program selection_example
 
 Project dependencies: [types](types.md).
 
+Coverage, fixtures, tolerances, commands and limitations:
+
+- [Dataset discovery, selection and loading](../tests/data-loading.md).
+
 Relevant test/validation sources:
 
 - [`test_run_matching.f90`](../../test/test_run_matching.f90)

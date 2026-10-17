@@ -161,6 +161,10 @@ end program example_flight_condition
 
 Project dependencies: [types](types.md), [standard_atmosphere](standard_atmosphere.md), [aerodynamic_properties](aerodynamic_properties.md), [coefficient_query](coefficient_query.md).
 
+Coverage, fixtures, tolerances, commands and limitations:
+
+- [Flight-condition acceptance and Reynolds-matched altitude](../tests/flight-conditions.md).
+
 Relevant test/validation sources:
 
 - [`test_flight_condition_validation.f90`](../../test/test_flight_condition_validation.f90)

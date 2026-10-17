@@ -64,6 +64,10 @@ end program catalogue_example
 
 Project dependencies: [types](types.md), [data_io](data_io.md).
 
+Coverage, fixtures, tolerances, commands and limitations:
+
+- [Dataset discovery, selection and loading](../tests/data-loading.md).
+
 Relevant test/validation sources:
 
 - [`test_dataset_catalogue.f90`](../../test/test_dataset_catalogue.f90)

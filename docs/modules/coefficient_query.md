@@ -134,6 +134,12 @@ end program example_coefficient_query
 
 Project dependencies: [types](types.md), [linear_interpolation](linear_interpolation.md), [pchip_interpolation](pchip_interpolation.md), [akima_interpolation](akima_interpolation.md).
 
+Coverage, fixtures, tolerances, commands and limitations:
+
+- [Prepared coefficient queries and supported Mach gaps](../tests/coefficient-queries.md).
+- [Flight-condition acceptance and Reynolds-matched altitude](../tests/flight-conditions.md).
+- [Held-out interpolation validation](../tests/interpolation-validation.md).
+
 Relevant test/validation sources:
 
 - [`test_coefficient_query_v2.f90`](../../test/test_coefficient_query_v2.f90)

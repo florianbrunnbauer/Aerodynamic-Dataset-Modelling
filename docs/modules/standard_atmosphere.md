@@ -92,6 +92,11 @@ end program example_standard_atmosphere
 
 Project dependencies: [types](types.md).
 
+Coverage, fixtures, tolerances, commands and limitations:
+
+- [Standard atmosphere numerical behavior](../tests/standard-atmosphere.md).
+- [Flight-condition acceptance and Reynolds-matched altitude](../tests/flight-conditions.md).
+
 Relevant test/validation sources:
 
 - [`test_standard_atmosphere.f90`](../../test/test_standard_atmosphere.f90)

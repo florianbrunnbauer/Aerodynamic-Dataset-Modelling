@@ -74,6 +74,11 @@ end program validation_example
 
 Project dependencies: [types](types.md).
 
+Coverage, fixtures, tolerances, commands and limitations:
+
+- [Run and dataset validity](../tests/dataset-validation.md).
+- [Prepared coefficient queries and supported Mach gaps](../tests/coefficient-queries.md).
+
 Relevant test/validation sources:
 
 - [`test_run_validation.f90`](../../test/test_run_validation.f90)

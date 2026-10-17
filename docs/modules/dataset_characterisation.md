@@ -93,6 +93,10 @@ end program characterisation_example
 
 Project dependencies: [types](types.md).
 
+Coverage, fixtures, tolerances, commands and limitations:
+
+- [Run and dataset characterisation](../tests/dataset-characterisation.md).
+
 Relevant test/validation sources:
 
 - [`test_dataset_characterisation.f90`](../../test/test_dataset_characterisation.f90)

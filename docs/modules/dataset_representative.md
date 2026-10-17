@@ -108,6 +108,11 @@ end program representative_example
 
 Project dependencies: [types](types.md).
 
+Coverage, fixtures, tolerances, commands and limitations:
+
+- [Representative sweep selection](../tests/representative-selection.md).
+- [Prepared coefficient queries and supported Mach gaps](../tests/coefficient-queries.md).
+
 Relevant test/validation sources:
 
 - [`test_dataset_representative.f90`](../../test/test_dataset_representative.f90)

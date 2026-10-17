@@ -93,6 +93,8 @@ $$
 
 ## Documentation
 
+The [test reference](docs/tests/README.md) complements the architecture and module pages with functionality-based coverage and validation documentation.
+
 Start with the [architecture](docs/architecture.md) for data ownership, the preparation/query flow, validation responsibilities and numerical policy. The [module reference](docs/modules/README.md) documents every module's public interface, units, behavior, errors, examples and test links.
 
 | Area | Module references |
@@ -105,6 +107,8 @@ Start with the [architecture](docs/architecture.md) for data ownership, the prep
 | Queries and physics | [coefficient_query](docs/modules/coefficient_query.md), [standard_atmosphere](docs/modules/standard_atmosphere.md), [flight_condition_validation](docs/modules/flight_condition_validation.md), [aerodynamic_properties](docs/modules/aerodynamic_properties.md) |
 
 ## Tests and interpolation validation
+
+The [test documentation index](docs/tests/README.md) groups related unit and integration programs by verified functionality. Each page explains source coverage, behavior, fixtures, reference values, tolerances, commands, failure diagnosis and limitations. [Held-out interpolation validation](docs/tests/interpolation-validation.md) has a separate page because it measures prediction error rather than only checking expected behavior.
 
 Run the complete suite from the repository root:
 
@@ -139,7 +143,7 @@ These results characterize the tested curves and held-out intervals; they are no
 |---|---|
 | [`app/main.f90`](app/main.f90) | Interactive application and result reporting |
 | [`src/`](src/) | Readers, preparation pipeline, interpolation, coefficient queries, atmosphere, flight-condition checks, and load calculations |
-| [`docs/`](docs/architecture.md) | Architecture and complete module reference |
+| [`docs/`](docs/architecture.md) | Architecture, module reference and [test documentation](docs/tests/README.md) |
 | [`test/`](test/) | Unit tests, integration tests, and interpolation validation programs |
 | [`data/phase_2/`](data/phase_2/) | Bundled CRM Test 197 run CSVs |
 | [`data/naca0012.csv`](data/naca0012.csv) | XFOIL NACA 0012 polar used by the original reader/interpolation example |

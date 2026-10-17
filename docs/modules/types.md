@@ -260,3 +260,11 @@ end program types_example
 ## Dependencies and tests
 
 Depends only on the intrinsic `iso_fortran_env` module. There is no dedicated types-only test source. Reader, grouping, representative, coefficient-query and flight-condition tests exercise these types through their public module interfaces. Start with [representative selection](dataset_representative.md) and [coefficient queries](coefficient_query.md) for index usage.
+
+Coverage, fixtures, tolerances, commands and limitations:
+
+- [Dataset discovery, selection and loading](../tests/data-loading.md).
+- [Representative sweep selection](../tests/representative-selection.md).
+- [Prepared coefficient queries and supported Mach gaps](../tests/coefficient-queries.md).
+- [Flight-condition acceptance and Reynolds-matched altitude](../tests/flight-conditions.md).
+

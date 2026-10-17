@@ -106,6 +106,11 @@ end program example_aerodynamic_properties
 
 Project dependencies: No project-module dependency..
 
+Coverage, fixtures, tolerances, commands and limitations:
+
+- [Dynamic pressure, loads and lift-to-drag ratio](../tests/aerodynamic-properties.md).
+- [Flight-condition acceptance and Reynolds-matched altitude](../tests/flight-conditions.md).
+
 Relevant test/validation sources:
 
 - [`test_aerodynamic_properties.f90`](../../test/test_aerodynamic_properties.f90)
